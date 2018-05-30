@@ -1213,7 +1213,12 @@ createChart('#chart2',85);
 
 
 
-
+function toCSV(){
+    alert("Please load all the data and generate consolidate table ");
+    var table = $('#consolidateTable').clone();
+    table.find('[style*="display: none"]').remove();
+    table.tableToCSV();
+}
 
 
 
@@ -1227,6 +1232,7 @@ $("document").ready(function() {
   $("#crimesNY").on("click", getDataCrimes)
   $("#housingBuildng").on("click", getdataHousing)
   $("#consolidateBtn").on("click", loadConsolidate)
+    $('#cvsbtn').on("click", toCSV);
 
 
 });
