@@ -239,10 +239,25 @@
           <!--Content tables for information map-->
 
           <button id="crimesNY">View Crimes Table</button>
-          <button id="housingBuildng"> View Housing by building Table </button>
-          <button id="consolidateTable"> View Consolidate Table </button>
-
+          <button id="housingBuildng"> View Home Affordability Table </button>
+          <button id="consolidateBtn"> View Consolidate Table </button>
           <br>
+            <label>Please note that load crime table can take ~30 sec the first time</label>
+          <br>
+
+          <label> Consolidate(Please Load crime, distance and home affordability before)</label>
+
+          <table class="table table-bordered table-striped" id="consolidateTable">
+                        <tbody>
+                        <tr>
+                            <th>BoroCD</th>
+                            <th>ExtremeLowI</th>
+                            <th>Distance</th>
+                            <th>Crime</th>
+                        </tr>
+                        </tbody>
+          </table>
+
           <label>Distance (Turn on the district centroid to view data)</label>
           <table class="table table-bordered table-striped" id="distancesTable">
                         <tbody>
@@ -268,7 +283,7 @@
                         <tbody>
                         <tr>
                             <th>BoroCD</th>
-                            <th>Home Affordability</th>
+                            <th>ExtremeLowI</th>
                         </tr>
                         </tbody>
           </table>

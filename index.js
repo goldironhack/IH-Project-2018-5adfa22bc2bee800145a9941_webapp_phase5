@@ -26,7 +26,6 @@ let crimes =[];
 var icons = {
   // - icon house orange
   house: "https://i.imgur.com/2uNq1px.png",
-  museum: "file:///C:/Users/Elsa/Desktop/Ironhack/museum.png",
   artgallery: "https://i.imgur.com/6bZehp5.png",
   markets:"https://i.imgur.com/Q4evFIy.png"
 };
@@ -581,7 +580,6 @@ function addMarkersMuseums(url){
        var marker = new google.maps.Marker({
          position: new google.maps.LatLng(splits2[0],splits1[0]),
           map: map,
-            icon: { url: icons.museum }
         });
 
            markers.push(marker);
@@ -939,7 +937,7 @@ if(districtsIncome.length==0){
 
 
      for (var [key, value] of mapDistricts) {
-       let districtIncome =  {"BoroCD":key,"extremeLowI":value};
+       let districtIncome =  {"BoroCD":formatterBoroCD(key),"extremeLowI":value};
        districtsIncome.push(districtIncome);
      }
 
@@ -974,35 +972,82 @@ if(districtsIncome.length==0){
 
 }
 
+
+
+function formatterBoroCD(borocd){
+
+    let community = borocd.substring(0,2) ;
+    let number = parseInt(borocd.substring(3,5)) ;
+    let communityNumber;
+
+    switch(community) {
+   case "MN":
+     communityNumber = 100;
+     break;
+   case "BX":
+     communityNumber = 200;
+     break;
+   case "BK":
+     communityNumber = 300;
+     break;
+    case "QN":
+       communityNumber = 400;
+       break;
+    case "SI":
+      communityNumber = 500;
+       break;
+  }
+
+   return communityNumber+number;
+
+}
+
+
 //  Consolidating data
 function loadConsolidate(){
 
      let districtsConsolidate =[];
 
 
-     /*100 MANHANTHAM
-     200 BRONX
-     300 BROOKLYN
-     400 QUEENS
-     500 STATEN ISLAND*/
-
-
 
 
        for (var i = 0; i < distances.length; i++){
-
+        let extremeLowI=0;
         let BoroCD = distances[i].boroCDist;
         let distance = distances[i].dist;
         let crimeCount  = crimesCount.filter(item => item.boroCD == BoroCD )[0].crimesCount;
+        let districtIncome = districtsIncome.filter(item => item.BoroCD == BoroCD );//[0].extremeLowI;
+        if (districtIncome.length>0)
+         {
+                extremeLowI =  districtIncome[0].extremeLowI;
+         }
 
 
-
-        let districtConsolidate ={"BoroCD":BoroCD,"crimeCount":crimeCount,"distance":distance}  ;
+        let districtConsolidate ={"BoroCD":BoroCD,"crimeCount":crimeCount,"distance":distance,"extremeLowI":extremeLowI}  ;
         districtsConsolidate.push(districtConsolidate);
 
       }
 
-   console.log(districtsConsolidate);
+
+
+
+//clean table
+     while($("#consolidateTable tr").length>1)
+     {
+         $("#consolidateTable tr:last").remove();
+     }
+
+for (var i = 0; i < districtsConsolidate.length; i++) {
+    tr = $('<tr/>');
+    tr.append("<td>" + districtsConsolidate[i].BoroCD + "</td>");
+    tr.append("<td>" + districtsConsolidate[i].extremeLowI + "</td>");
+    tr.append("<td>" + districtsConsolidate[i].distance + "</td>");
+    tr.append("<td>" + districtsConsolidate[i].crimeCount + "</td>");
+    $('#consolidateTable').append(tr);
+}
+
+
+
 
 }
 
@@ -1177,10 +1222,11 @@ createChart('#chart2',85);
 
 
 //Bottons
+
 $("document").ready(function() {
   $("#crimesNY").on("click", getDataCrimes)
   $("#housingBuildng").on("click", getdataHousing)
-  $("#consolidateTable").on("click", loadConsolidate)
+  $("#consolidateBtn").on("click", loadConsolidate)
 
 
 });
