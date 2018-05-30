@@ -22,6 +22,7 @@ let distances = [];
 var crimesCount = [];
 var districtsIncome = [];
 var houseIncome = [];
+let crimes =[];
 var icons = {
   // - icon house orange
   house: "https://i.imgur.com/2uNq1px.png",
@@ -213,6 +214,8 @@ switch (option) {
 
 function centroidDistrict(url){
 
+
+
      $.getJSON(url, function(dataLayer, textstatus) {
 
       let centroids =[];
@@ -249,6 +252,8 @@ function centroidDistrict(url){
             centroids.push(centroid);
       }
 
+
+
       addCentroidsDistrict(centroids);
       distanceFinalDTable (centroids)
 
@@ -271,8 +276,7 @@ function addCentroidsDistrict(centroids) {
 
 function distanceFinalDTable (centroids){
 
-
-
+distances =[];
 
   for (var i = 0; i < centroids.length; i++) {
     let calculateD = calculateDistance(centroids[i],nyu);
@@ -296,6 +300,13 @@ function distanceFinalDTable (centroids){
   distances.sort(compare);
 
       var tr;
+
+      //clean table
+           while($("#distancesTable tr").length>1)
+           {
+               $("#distancesTable tr:last").remove();
+           }
+
       for (var i = 0; i < distances.length; i++) {
           tr = $('<tr/>');
           tr.append("<td>" + distances[i].boroCDist + "</td>");
@@ -310,7 +321,7 @@ function distanceFinalDTable (centroids){
 
 function countCrimesData(){
 
-  let crimes =[];
+if (crimes.length==0){
 
   map.data.forEach(function(feature) {
 
@@ -351,6 +362,10 @@ function countCrimesData(){
           crimes.push(crime);
          }
     });
+
+   }
+
+
      crimesCount = crimes;
      countsCrimeTable(crimesCount);
   }
@@ -371,6 +386,14 @@ function countsCrimeTable(crimesC) {
 
 
       var tr;
+
+
+      //clean table
+           while($("#crimesTable tr").length>1)
+           {
+               $("#crimesTable tr:last").remove();
+           }
+
       for (var i = 0; i < crimesC.length; i++) {
           tr = $('<tr/>');
           tr.append("<td>" + crimesC[i].boroCD + "</td>");
@@ -824,6 +847,10 @@ function centroidDSwitch() {
 
 
 
+
+
+
+
 function centroidNSwitch() {
   // Get the checkbox
   var checkbox = document.getElementById("centroidNPoint");
@@ -862,7 +889,18 @@ function getDataNames() {
 
 //Load crime datasets
 function getDataCrimes() {
+
+// Activate crime data
+if(!$('#crimesPoint').is(':checked')){
+
+      alert("Please turn on the crime from the custom control panel");
+  }
+else {
     countCrimesData();
+    }
+
+
+
 }
 
 
@@ -919,6 +957,14 @@ if(districtsIncome.length==0){
 }
 
   var tr;
+
+  //clean table
+       while($("#homeAffordabilityTable tr").length>1)
+       {
+           $("#homeAffordabilityTable tr:last").remove();
+       }
+
+
   for (var i = 0; i < districtsIncome.length; i++) {
       tr = $('<tr/>');
       tr.append("<td>" + districtsIncome[i].BoroCD + "</td>");
@@ -934,16 +980,29 @@ function loadConsolidate(){
      let districtsConsolidate =[];
 
 
+     /*100 MANHANTHAM
+     200 BRONX
+     300 BROOKLYN
+     400 QUEENS
+     500 STATEN ISLAND*/
+
+
+
+
        for (var i = 0; i < distances.length; i++){
 
         let BoroCD = distances[i].boroCDist;
-        let crimesCount  = crimesC.filter(item => item.boroCD == BoroCD );
+        let distance = distances[i].dist;
+        let crimeCount  = crimesCount.filter(item => item.boroCD == BoroCD )[0].crimesCount;
 
-        let districtConsolidate ={}  ;
+
+
+        let districtConsolidate ={"BoroCD":BoroCD,"crimeCount":crimeCount,"distance":distance}  ;
         districtsConsolidate.push(districtConsolidate);
 
       }
 
+   console.log(districtsConsolidate);
 
 }
 
@@ -1120,6 +1179,8 @@ createChart('#chart2',85);
 //Bottons
 $("document").ready(function() {
   $("#crimesNY").on("click", getDataCrimes)
-  $("#namesGis").on("click", getDataNames)
   $("#housingBuildng").on("click", getdataHousing)
+  $("#consolidateTable").on("click", loadConsolidate)
+
+
 });

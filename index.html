@@ -98,7 +98,8 @@
               <div class="box_content">
                 <div><table class="tg">
                   <tr>
-                    <td class="tg-kzxb">Turn on/off the district centroid</td>
+                    <td class="tg-kzxb">Turn on/off the district centroid and distance table<br>(Please see table below)</td>
+
                     <td class="tg-kzxb">
                     <input type="checkbox" id="centroidDPoint" onclick="centroidDSwitch() " class="switch-input">
                       <label for="centroidDPoint" class="switch-label"> <span class="toggle--on"><i class="material-icons">location_on</i></span><span class="toggle--off"><i class="material-icons">location_off</i></span></label>
@@ -237,12 +238,12 @@
         <div class="col-lg-12 ">
           <!--Content tables for information map-->
 
-          <button id="crimesNY">Crimes</button>
-          <button id="namesGis"> Neighborhood Names GIS </button>
-          <button id="housingBuildng"> Housing by building data </button>
+          <button id="crimesNY">View Crimes Table</button>
+          <button id="housingBuildng"> View Housing by building Table </button>
+          <button id="consolidateTable"> View Consolidate Table </button>
 
-
-
+          <br>
+          <label>Distance (Turn on the district centroid to view data)</label>
           <table class="table table-bordered table-striped" id="distancesTable">
                         <tbody>
                         <tr>
@@ -252,8 +253,9 @@
                         </tbody>
           </table>
 
+          <label>Crime</label>
           <table class="table table-bordered table-striped" id="crimesTable">
-                        <tbody>
+                      <tbody>
                         <tr>
                             <th>BoroCD</th>
                             <th>Crimes</th>
@@ -261,7 +263,7 @@
                         </tbody>
           </table>
 
-
+          <label>Home Affordability</label>
           <table class="table table-bordered table-striped" id="homeAffordabilityTable">
                         <tbody>
                         <tr>
@@ -281,7 +283,7 @@
 
 
   <!--footer-->
-  
+
   <!--Script js libraries-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
